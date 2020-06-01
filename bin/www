@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-
+require('dotenv').config();
 /**
  * Module dependencies.
  */
@@ -7,10 +7,18 @@
 var app = require('../app');
 var debug = require('debug')('eze-test:server');
 var http = require('http');
+const mongoose = require('mongoose')
 
 /**
  * Get port from environment and store in Express.
  */
+
+mongoose.connect(process.env.MONGO_URI, {
+  useMongoClient: true,
+  useNewUrlParser: true,
+  useUnifiedTopology:true 
+})
+
 
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
@@ -82,6 +90,7 @@ function onError(error) {
  */
 
 function onListening() {
+  console.log("runiing on port",port)
   var addr = server.address();
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
