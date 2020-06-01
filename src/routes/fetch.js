@@ -1,10 +1,9 @@
 var express = require('express');
-const { sellModel } = require('../model/mongooseModel');
 var router = express.Router();
 
 /* GET home page. */
-router.get('/sell', function (req, res, next) {
-    const sell = sellProducts()
+router.get('/fetch', function (req, res, next) {
+    const fetch = fetchSpreadsheet();
     res.render('index', { title: 'Express' });
 });
 

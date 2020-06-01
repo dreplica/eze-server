@@ -5,9 +5,9 @@ const iphoneSchema = new mongoose.Schema({
     spec: [{
         memory: String,
         price: Number,
-        quantity:Number,default:0
+        quantity:{type:Number,default:0}
     }]
 })
 
-const buyModel = mongoose.model('Buy',iphoneSchema)
-const sellModel = mongoose.model('Sell',iphoneSchema)
+export const  buyModel = mongoose.model('Buy',iphoneSchema)
+export const sellModel = mongoose.model('Sell',iphoneSchema)
