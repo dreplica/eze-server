@@ -16,9 +16,25 @@ const mongoose = require('mongoose')
 mongoose.connect(process.env.MONGO_URI, {
   useMongoClient: true,
   useNewUrlParser: true,
-  useUnifiedTopology:true 
+  useUnifiedTopology: true,
+  useCreateIndex:true
 })
 
+const mongo_connect = () => console.log("definitely connected now to mongoose");
+const mongo_disconnect = () => console.log("disconnected from mongoose");
+const mongo_error = () => console.log("mongoose error occured");
+
+async function mongo_events() {
+  try {
+    await mongoose.connection.on("connected", mongo_connect);
+    await mongoose.connection.on("disconnected", mongo_disconnect);
+    await mongoose.connection.on("error", mongo_error);
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+mongo_events()
 
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
