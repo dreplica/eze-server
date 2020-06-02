@@ -1,20 +1,25 @@
 
 const express = require('express');
-const { fetchSpreashSheet, getBuyProduts, getSellProducts, searchProducts } = require('../controllers/products');
-const {google,buyProducts } = require('../../config');
+const { getBuyProduts, getSellProducts, searchProducts } = require('../controllers/products');
+const auth = require('../../config');
+const { updateToken } = require('../controllers/apiAuth');
+const {buyProductsData,sellProductsData} = require('../controllers/spreadsheetRead');
 
 const router = express.Router();
 
 /* GET home page. */
-router.get('/', function (req, res) {
+router.get('/',  async (req, res)=> {
   //here would fetch phones on a random
-  if (request.query['code']) {
-    const code = request.query['code']
-    updateToken(code)
+  if (req.query['code']) {
+    const code = req.query['code']
+    console.log("coding code",code)
+    await updateToken(code)
+    return res.status(200)
   }
-  
-  const data = buyProducts(google.auth.OAuth2)
-  console.log(data)
+  const oAuth = await auth
+  const buydata = await buyProductsData(oAuth)
+  const selldata = await sellProductsData(oAuth)
+  console.log(buydata,selldata)
   return res.status(200).json({name:data});
 });
 
