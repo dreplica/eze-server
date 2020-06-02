@@ -1,5 +1,6 @@
 const { google } = require('googleapis');
-const { buyModel } = require('../model/mongooseModel');
+const { buyModel, sellModel} = require('../model/mongooseModel');
+const { model } = require('mongoose');
 
 async function buyProductsData(auth) {
     return new Promise((resolve, reject) => {
@@ -28,6 +29,7 @@ async function buyProductsData(auth) {
                         if (acc.model.phone) {
                             if (row.find(x => /\$/ig.test(x))) {
                                 acc.model.spec.push(distributeVaues(row))
+                                acc.model.locked = (acc.model.spec[0].locked)?true:false
                             }
                         }
 
@@ -38,7 +40,7 @@ async function buyProductsData(auth) {
                         return acc;
                     },{item:[],model:{},count:-1});
 
-                    console.log(data.item)
+                    console.log(data.item[0])
                     return resolve(data.item)
                 } else {
                     console.log('No data found.');
@@ -64,7 +66,7 @@ const getPhones = (arr) => {
 
 const distributeVaues = (arr = []) => {
     const itemStructure = {
-        locked: true,
+        locked: false,
         memory: 0,
         price: []
     }
@@ -72,7 +74,7 @@ const distributeVaues = (arr = []) => {
     arr.forEach((item, ind) => {
         switch (ind) {
             case 0:
-                if (/unlocked|\S/i.test(item)) itemStructure.locked = false;
+               itemStructure.locked = (item === 'Unlocked' || !item)? false:true;
                 break;
 
             case 1:
