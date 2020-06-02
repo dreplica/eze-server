@@ -2,7 +2,7 @@
 const express = require('express');
 const { getBuyProduts, getSellProducts, searchProducts } = require('../controllers/products');
 const { updateToken } = require('../controllers/apiAuth');
-const { updateSellMOdel,updateBuyMOdel } = require('../controllers/updateSpreadsheet');
+const { updateSellModel,updateBuyModel } = require('../controllers/updateSpreadsheet');
 
 const router = express.Router();
 
@@ -15,9 +15,9 @@ router.get('/',  async (req, res)=> {
     await updateToken(code)
     return res.status(200).send("configured")
   }
-  await updateBuyMOdel()
-  await updateSellMOdel()
-  return res.status(200).json({name:data});
+  await updateBuyModel()
+  await updateSellModel()
+  return res.status(200).json({name:"hello"});
 });
 
 router.get('/fetch', (req,res) => {

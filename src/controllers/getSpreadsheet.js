@@ -12,8 +12,8 @@ async function buyProductsData(auth) {
                 if (err) return reject({ error: 'The API returned an error: ' + err });
                 const rows = res.data.values;
                 if (rows.length) {
+                    
                     const data = rows.reduce((acc,row,ind,arr) => {
-
                         const phone = getPhones(row)
                         if (phone) {
                             if (phone && acc.count >= 0) {
@@ -35,9 +35,7 @@ async function buyProductsData(auth) {
                         }
 
                         return acc;
-                    },{item:[],model:{},count:-1});
-
-                    console.log(data.item[0])
+                    }, { item: [], model: {}, count: -1 });
                     return resolve(data.item)
                 } else {
                     console.log('No data found.');
@@ -49,6 +47,7 @@ async function buyProductsData(auth) {
 }
 
 async function sellProductsData(auth) {
+    console.log("selling")
     return new Promise((resolve, reject) => {
         const sheets = google.sheets({ version: 'v4', auth });
         sheets.spreadsheets.values.get(
@@ -71,7 +70,8 @@ async function sellProductsData(auth) {
                             acc.model.phone = phone;
                             acc.model.spec = []
                             acc.count += 1;
-                        }
+                        } 
+
                         if (acc.model.phone) {
                             if (row.find(x => /\$/ig.test(x))) {
                                 acc.model.spec.push(distributeVaues(row))
@@ -84,7 +84,6 @@ async function sellProductsData(auth) {
 
                         return acc;
                     },{item:[],model:{},count:-1});
-
                     return resolve(data.item)
                 } else {
                     console.log('No data found.');

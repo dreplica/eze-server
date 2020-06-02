@@ -3,9 +3,10 @@ const mongoose = require('mongoose')
 const iphoneSchema = new mongoose.Schema({
     phone: String,
     spec: [{
+        locked:Boolean,
         memory: String,
-        price: Number,
-        quantity:{type:Number,default:0}
+        price: [String],
+        
     }]
 })
 
