@@ -1,6 +1,5 @@
 const { google } = require('googleapis');
 const { buyModel, sellModel} = require('../model/mongooseModel');
-const { model } = require('mongoose');
 
 async function buyProductsData(auth) {
     return new Promise((resolve, reject) => {
@@ -29,7 +28,6 @@ async function buyProductsData(auth) {
                         if (acc.model.phone) {
                             if (row.find(x => /\$/ig.test(x))) {
                                 acc.model.spec.push(distributeVaues(row))
-                                acc.model.locked = (acc.model.spec[0].locked)?true:false
                             }
                         }
 
@@ -50,7 +48,52 @@ async function buyProductsData(auth) {
     });
 }
 
-const sellProductsData = ()=>{}
+async function sellProductsData(auth) {
+    return new Promise((resolve, reject) => {
+        const sheets = google.sheets({ version: 'v4', auth });
+        sheets.spreadsheets.values.get(
+            {
+                spreadsheetId: '1F6BvjBRKMf6cVTzrb3O-4uORjnhHN0I6DC9jkuxQibo',
+                range: 'IPHONES!L3:U'
+            },
+            (err, res) => {
+                if (err) return reject('The API returned an error: ' + err);
+                const rows = res.data.values;
+                if (rows.length) {
+                    const data = rows.reduce((acc,row,ind,arr) => {
+
+                        const phone = getPhones(row)
+                        if (phone) {
+                            if (phone && acc.count >= 0) {
+                                acc.item.push(acc.model);
+                                acc.model = {}
+                            }
+                            acc.model.phone = phone;
+                            acc.model.spec = []
+                            acc.count += 1;
+                        }
+                        if (acc.model.phone) {
+                            if (row.find(x => /\$/ig.test(x))) {
+                                acc.model.spec.push(distributeVaues(row))
+                            }
+                        }
+
+                        if (arr.length - 1 === ind) {
+                            acc.item.push(acc.model);
+                        }
+
+                        return acc;
+                    },{item:[],model:{},count:-1});
+
+                    console.log(data.item[0])
+                    return resolve(data.item)
+                } else {
+                    console.log('No data found.');
+                }
+            }
+        );
+    });
+}
 
 module.exports = {
     buyProductsData,
