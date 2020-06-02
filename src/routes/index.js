@@ -1,9 +1,8 @@
 
 const express = require('express');
 const { getBuyProduts, getSellProducts, searchProducts } = require('../controllers/products');
-const auth = require('../../config');
 const { updateToken } = require('../controllers/apiAuth');
-const {buyProductsData,sellProductsData} = require('../controllers/spreadsheetRead');
+const { updateSellMOdel,updateBuyMOdel } = require('../controllers/updateSpreadsheet');
 
 const router = express.Router();
 
@@ -14,12 +13,10 @@ router.get('/',  async (req, res)=> {
     const code = req.query['code']
     console.log("coding code",code)
     await updateToken(code)
-    return res.status(200)
+    return res.status(200).send("configured")
   }
-  const oAuth = await auth
-  const buydata = await buyProductsData(oAuth)
-  const selldata = await sellProductsData(oAuth)
-  console.log(buydata,selldata)
+  await updateBuyMOdel()
+  await updateSellMOdel()
   return res.status(200).json({name:data});
 });
 
