@@ -1,18 +1,18 @@
-import { sellModel,buyModel } from "../model/mongooseModel";
+// import { sellModel,buyModel } from "../model/mongooseModel";
 
 
-export const fetchSpreashSheet = () => {
+// export const fetchSpreashSheet = () => {
     
-}
+// }
 
-export const searchProducts = () => {
+// export const searchProducts = () => {
     
-}
+// }
 
-export const getBuyProduts = () => {
+// export const getBuyProduts = () => {
     
-}
+// }
 
-export const getSellProducts = () => {
+// export const getSellProducts = () => {
     
-}
+// }

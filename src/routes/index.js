@@ -1,15 +1,22 @@
-import express from 'express';
-import { fetchSpreashSheet, getBuyProduts, getSellProducts, searchProducts } from '../controllers/products';
+
+const express = require('express');
+const { fetchSpreashSheet, getBuyProduts, getSellProducts, searchProducts } = require('../controllers/products');
+const {google,buyProducts } = require('../../config');
 
 const router = express.Router();
 
 /* GET home page. */
 router.get('/', function (req, res) {
   //here would fetch phones on a random
+  const data = buyProducts(google.auth.OAuth2)
+  console.log(data)
+  return res.status(200).json({name:data});
 });
 
 router.get('/fetch', (req,res) => {
-   fetchSpreashSheet();
+  // fetchSpreashSheet();
+  console.log("hello")
+  return res.status(200).json({});
 })
 
 router.get('/buy', (req,res) => {
@@ -25,4 +32,4 @@ router.post('/search', (req, res) => {
   const search  = searchProducts(parameters)
 })
 
-export default router
+module.exports =  router

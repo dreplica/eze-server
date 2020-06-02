@@ -9,5 +9,10 @@ const iphoneSchema = new mongoose.Schema({
     }]
 })
 
-export const  buyModel = mongoose.model('Buy',iphoneSchema)
-export const sellModel = mongoose.model('Sell',iphoneSchema)
+ const  buyModel = mongoose.model('Buy',iphoneSchema)
+const sellModel = mongoose.model('Sell', iphoneSchema)
+ 
+module.exports = {
+    buyModel,
+    sellModel
+}
