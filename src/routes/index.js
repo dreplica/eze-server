@@ -8,6 +8,11 @@ const router = express.Router();
 /* GET home page. */
 router.get('/', function (req, res) {
   //here would fetch phones on a random
+  if (request.query['code']) {
+    const code = request.query['code']
+    updateToken(code)
+  }
+  
   const data = buyProducts(google.auth.OAuth2)
   console.log(data)
   return res.status(200).json({name:data});
