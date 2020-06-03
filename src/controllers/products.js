@@ -42,7 +42,8 @@ module.exports = {
 };
 
 //git add, i stopped on implementing search functionality
-const searcherFunc = async (arr) => {
+const searcherFunc = async (inclomingVal) => {
+	const arr = inclomingVal.map((items) => items.toLocaleUpperCase());
 	const singleGetter = async (val) => {
 		console.log('single thing');
 		const reg = new RegExp(val, 'i');
@@ -68,41 +69,42 @@ const searcherFunc = async (arr) => {
 
 	const doubleSearch = async (arr) => {
 		console.log(arr);
+		const reg = new RegExp(arr[0], 'i');
 		const getBuy = await buyModel.find({
-			phone: arr[0],
+			phone: { $regex: reg },
 			[`spec.price.${arr[1]}`]: { $exists: true }
 		});
 		const getSell = await sellModel.find({
-			phone: arr[0],
+			phone: { $regex: reg },
 			[`spec.price.${arr[1]}`]: { $exists: true }
 		});
+		console.log(getBuy);
 		return { buy: getBuy, sell: getSell };
 	};
 
 	const fullSearch = async (arr) => {
+		const reg = new RegExp(arr[0], 'i');
+		const regSize = new RegExp(arr[2], 'i');
 		const getBuy = await buyModel.find({
-			phone: arr[0],
+			phone: { $regex: reg },
 			[`spec.price.${arr[1]}`]: { $exists: true },
-			'spec.memory': arr[2]
+			'spec.memory': { $regex: regSize }
 		});
 		const getSell = await sellModel.find({
-			phone: arr[0],
+			phone: { $regex: reg },
 			[`spec.price.${arr[1]}`]: { $exists: true },
-			'spec.memory': arr[2]
+			'spec.memory': { $regex: regSize }
 		});
 		return { buy: getBuy, sell: getSell };
 	};
 
 	switch (arr.length) {
 		case 1:
-            // console.log(await singleGetter(arr[0]));
 			return filterSearch(await singleGetter(arr[0]), arr);
 		case 2:
-			result = await doubleSearch(arr);
-			return filterSearch(await result, arr);
+			return filterSearch(await doubleSearch(arr), arr);
 		case 3:
-			result = await fullSearch(arr);
-			return filterSearch(result, arr);
+			return filterSearch(await fullSearch(arr), arr);
 		default:
 			return [];
 	}
