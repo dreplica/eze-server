@@ -31,7 +31,7 @@ router.get('/buy', async (req,res) => {
 
 router.get('/sell', (req,res) => {
   const sell = await getSellProducts();
-  return res.status(200).json(buy)
+  return res.status(200).json(sell)
 
 })
 

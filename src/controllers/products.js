@@ -3,9 +3,14 @@
 const { buyModel, sellModel } = require("../model/mongooseModel")
 
 
-// export const searchProducts = () => {
+const searchProducts = async (params) => {
+    try {
+        return await searcherFunc(params)
+    } catch (error) {
+        console.log(error)
+    }
 
-// }
+}
 
 const getBuyProduts = async () => {
     try {
@@ -34,5 +39,52 @@ export const getSellProducts = async () => {
 }
 
 module.exports = {
-    getBuyProduts
+    getBuyProduts,
+    getSellProducts,
+    searchProducts
+}
+
+
+const searcherFunc = async (arr) => {
+
+    const singleGetter = async (val) => {
+        const getBuy = await buyModel.find({
+            $or: [
+                { 'phone': { $regex: /val/i } },
+                { 'spec.memory': { $regex: /val/i } },
+                { 'spec.price': { $elemMatch: val } }
+            ],
+        })
+        const getSell = await sellModel.find({
+            $or: [
+                { 'phone': { $regex: /val/i } },
+                { 'spec.memory': { $regex: /val/i } },
+                { 'spec.price': { $elemMatch: val } }
+            ],
+        })
+        return [...getBuy,...getSell]
+    }
+
+    const doubleSearch = async (arr) => {
+        const getBuy = await buyModel.find({phone:arr[0],'spec.price':{$elemMatch:arr[1]}})
+        const getSell = await SellModel.find({phone:arr[0],'spec.price':{$elemMatch:arr[1]}})
+        return [...getBuy,...getSell]
+    }
+
+    const fullSearch = async (arr) => {
+        const getBuy = await buyModel.find({phone:arr[0],'spec.price':{$elemMatch:arr[1]},'spec.memory':arr[2]})
+        const getSell = await SellModel.find({phone:arr[0],'spec.price':{$elemMatch:arr[1]},'spec.memory':arr[2]})
+        return [...getBuy,...getSell]
+    }
+
+    switch (arr.length) {
+        case 1:
+            return await singleGetter(arr[0])
+        case 2:
+            return await doubleSearch(arr)
+        case 3:
+            return await fullSearch(arr)
+        default:
+            return ([])
+    }
 }

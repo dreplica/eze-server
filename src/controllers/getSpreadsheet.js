@@ -1,5 +1,39 @@
 const { google } = require('googleapis');
 
+
+const getPhones = (arr) => {
+    if (arr.find(x => /iphone./ig.test(x))) {
+        return arr[0]
+    }
+}
+
+const distributeVaues = (arr = []) => {
+    const itemStructure = {
+        locked: false,
+        memory: 0,
+        price: []
+    }
+    const condition = ["New","A1","A2","B1","B2","C","C/B","C/D"]
+    arr.forEach((item, ind) => {
+        switch (ind) {
+            case 0:
+               itemStructure.locked = (item === 'Unlocked' || !item)? false:true;
+                break;
+
+            case 1:
+                itemStructure.memory = item;
+                break;
+
+            default:
+                itemStructure.price.push(item)
+                break;
+        }
+    })
+    itemStructure.price = itemStructure.price.map((item,ind)=>({[condition[ind]]:item}))
+    return itemStructure
+}
+
+
 async function buyProductsData(auth) {
     return new Promise((resolve, reject) => {
         const sheets = google.sheets({ version: 'v4', auth });
@@ -97,37 +131,4 @@ async function sellProductsData(auth) {
 module.exports = {
     buyProductsData,
     sellProductsData
-}
-
-
-const getPhones = (arr) => {
-    if (arr.find(x => /iphone./ig.test(x))) {
-        return arr[0]
-    }
-}
-
-const distributeVaues = (arr = []) => {
-    const itemStructure = {
-        locked: false,
-        memory: 0,
-        price: []
-    }
-    const condition = ["New","A1","A2","B1","B2","C","C/B","C/D"]
-    arr.forEach((item, ind) => {
-        switch (ind) {
-            case 0:
-               itemStructure.locked = (item === 'Unlocked' || !item)? false:true;
-                break;
-
-            case 1:
-                itemStructure.memory = item;
-                break;
-
-            default:
-                itemStructure.price.push(item)
-                break;
-        }
-    })
-    itemStructure.price = itemStructure.price.map((item,ind)=>({[condition[ind]]:item}))
-    return itemStructure
 }

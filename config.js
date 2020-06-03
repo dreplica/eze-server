@@ -30,11 +30,7 @@ function getNewToken(oAuth2Client) {
 		scope: SCOPES
 	});
     console.log('Authorize this app by visiting this url:', authUrl);
-    // try {
-    //     Axios.default.post(`http://localhost:3000/auth`,{url:authUrl})   
-    // } catch (error) {
-    //    console.log(error) 
-    // }
+   
     return oAuth2Client
 }
 
