@@ -1,19 +1,22 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const iphoneSchema = new mongoose.Schema({
-    phone: String,
-    spec: [{
-        locked:Boolean,
-        memory: String,
-        price: [String],
-        
-    }]
-})
+	phone: String,
+	spec: [
+		{
+			locked: Boolean,
+			memory: String,
+			price: [
+				{ New: String, A1: String, A2: String, B1: String, B2: String, C: String, 'C/B': String, 'C/D': String }
+			]
+		}
+	]
+});
 
- const  buyModel = mongoose.model('Buy',iphoneSchema)
-const sellModel = mongoose.model('Sell', iphoneSchema)
- 
+const buyModel = mongoose.model('Buy', iphoneSchema);
+const sellModel = mongoose.model('Sell', iphoneSchema);
+
 module.exports = {
-    buyModel,
-    sellModel
-}
+	buyModel,
+	sellModel
+};

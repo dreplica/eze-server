@@ -112,7 +112,7 @@ const distributeVaues = (arr = []) => {
         memory: 0,
         price: []
     }
-
+    const condition = ["New","A1","A2","B1","B2","C","C/B","C/D"]
     arr.forEach((item, ind) => {
         switch (ind) {
             case 0:
@@ -128,5 +128,6 @@ const distributeVaues = (arr = []) => {
                 break;
         }
     })
+    itemStructure.price = itemStructure.price.map((item,ind)=>({[condition[ind]]:item}))
     return itemStructure
 }

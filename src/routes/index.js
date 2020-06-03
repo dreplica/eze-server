@@ -15,23 +15,24 @@ router.get('/',  async (req, res)=> {
     await updateToken(code)
     return res.status(200).send("configured")
   }
-  await updateBuyModel()
-  await updateSellModel()
-  return res.status(200).json({name:"hello"});
 });
 
-router.get('/fetch', (req,res) => {
-  // fetchSpreashSheet();
-  console.log("hello")
-  return res.status(200).json({});
+router.get('/update', async (req, res) => {
+  await updateBuyModel()
+  await updateSellModel()
+  return res.status(200).json({status:"refreshed"});
+  
 })
 
-router.get('/buy', (req,res) => {
-  const buy = getBuyProduts()
+router.get('/buy', async (req,res) => {
+  const buy = await getBuyProduts()
+  return res.status(200).json(buy)
 })
 
 router.get('/sell', (req,res) => {
-  const sell = getSellProducts();
+  const sell = await getSellProducts();
+  return res.status(200).json(buy)
+
 })
 
 router.post('/search', (req, res) => {
