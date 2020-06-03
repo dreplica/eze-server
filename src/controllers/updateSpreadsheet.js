@@ -6,7 +6,11 @@ const mongoose = require('mongoose');
 const updateHandler = async (data, model) => {
 	// await data.forEach((item) => {
 	// console.table(item.spec.map(x=>x.price))
-	model.insertMany(data);
+	try {
+		model.insertMany(data);
+	} catch (error) {
+		return error;
+	}
 	// newModel.save();
 	// })
 };

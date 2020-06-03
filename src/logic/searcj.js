@@ -1,23 +1,33 @@
 const filterSearch = (searchResult, arr) => {
-    
 	const Buyseperate = searchResult.buy.map((item) => ({ ...item._doc, market: 'buy' }));
 	const Sellseperate = searchResult.sell.map((item) => ({ ...item._doc, market: 'sell' }));
-    const result = [...Buyseperate, ...Sellseperate];
-    console.log(result)
+	const result = [ ...Buyseperate, ...Sellseperate ];
 	switch (arr.length) {
 		case 1:
 			const val = new RegExp(arr[0], 'i');
 			const type = arr[0].toLocaleUpperCase();
 			return result.map((item) => {
 				if (val.test(item.phone)) return item;
-				console.log(item);
-				item.spec = item.spec.filter((spec) => {
-					console.log('first filter');
-					if (val.test(spec.memory)) return spec;
-					spec.price = spec.price.filter((test) => test[type]);
-					console.log('second filter');
-					if (spec.price) return spec;
-				});
+
+				const memory = item.spec.filter((memory) => val.test(memory.memory));
+				if (memory.length) {
+					item.spec = memory;
+					return item;
+				}
+
+                const price = item.spec.map((cost) => {
+                    const checkPrice = cost.price.filter((test) => test[type]);
+                    if (checkPrice.length) {
+                        cost.price = checkPrice
+                        return cost;
+                    }
+                })
+                
+				if (price.length) {
+					item.spec = price;
+					return item;
+				}
+
 				return item;
 			});
 		case 2:
@@ -28,7 +38,8 @@ const filterSearch = (searchResult, arr) => {
 					item.spec.price = item.spec.price.filter((test) => test[type]);
 					return item;
 				}
-			});
+            });
+        
 		case 3:
 			phone = new RegExp(arr[0], 'i');
 			type = arr[1].toLocaleUppercase();
