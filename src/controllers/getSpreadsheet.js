@@ -65,7 +65,6 @@ async function buyProductsData(auth) {
 							if (arr.length - 1 === ind) {
 								acc.item.push(acc.model);
 							}
-
 							return acc;
 						},
 						{ item: [], model: {}, count: -1 }
