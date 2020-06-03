@@ -25,7 +25,7 @@ const getBuyProduts = async () => {
     }
 }
 
-export const getSellProducts = async () => {
+ const getSellProducts = async () => {
     try {
         const page = 1
         const pagination = 10
@@ -46,35 +46,47 @@ module.exports = {
 
 
 const searcherFunc = async (arr) => {
-
+    
     const singleGetter = async (val) => {
+        console.log("single thing")
+        const reg = new RegExp(val,'i')
         const getBuy = await buyModel.find({
             $or: [
-                { 'phone': { $regex: /val/i } },
-                { 'spec.memory': { $regex: /val/i } },
-                { 'spec.price': { $elemMatch: val } }
+                { 'phone': { $regex: reg } },
+                { 'spec.memory': { $regex: reg } },
+                { [`spec.price.${val.toUppercase()}`]:{$exists:true}}
             ],
         })
         const getSell = await sellModel.find({
             $or: [
-                { 'phone': { $regex: /val/i } },
-                { 'spec.memory': { $regex: /val/i } },
-                { 'spec.price': { $elemMatch: val } }
+                { 'phone': { $regex: reg } },
+                { 'spec.memory': { $regex: reg } },
+                { [`spec.price.${val.toUppercase()}`]:{$exists:true}}
             ],
         })
-        return [...getBuy,...getSell]
+        return { buy: getBuy, sell: getSell }
     }
 
     const doubleSearch = async (arr) => {
-        const getBuy = await buyModel.find({phone:arr[0],'spec.price':{$elemMatch:arr[1]}})
-        const getSell = await SellModel.find({phone:arr[0],'spec.price':{$elemMatch:arr[1]}})
-        return [...getBuy,...getSell]
+        console.log(arr)
+        const getBuy = await buyModel.find({
+            phone: arr[0], [`spec.price.${arr[1]}`]: { $exists: true }
+        })
+        const getSell = await sellModel.find({
+            phone: arr[0], [`spec.price.${arr[1]}`]: { $exists: true }
+        })
+        return { buy: getBuy, sell: getSell }
     }
 
     const fullSearch = async (arr) => {
-        const getBuy = await buyModel.find({phone:arr[0],'spec.price':{$elemMatch:arr[1]},'spec.memory':arr[2]})
-        const getSell = await SellModel.find({phone:arr[0],'spec.price':{$elemMatch:arr[1]},'spec.memory':arr[2]})
-        return [...getBuy,...getSell]
+        
+        const getBuy = await buyModel.find({
+            phone: arr[0], [`spec.price.${arr[1]}`]: { $exists: true }, 'spec.memory': arr[2]
+        })
+        const getSell = await sellModel.find({
+            phone: arr[0], [`spec.price.${arr[1]}`]: { $exists: true }, 'spec.memory': arr[2]
+        })
+        return { buy: getBuy, sell: getSell }
     }
 
     switch (arr.length) {

@@ -29,15 +29,18 @@ router.get('/buy', async (req,res) => {
   return res.status(200).json(buy)
 })
 
-router.get('/sell', (req,res) => {
+router.get('/sell', async (req,res) => {
   const sell = await getSellProducts();
   return res.status(200).json(sell)
 
 })
 
-router.post('/search', (req, res) => {
-  const parameters = req.query
-  const search  = searchProducts(parameters)
+router.post('/search', async(req, res) => {
+  const parameters = req.body['search']
+  const search = await searchProducts(parameters)
+  console.log
+  return res.status(200).json(search)
+  
 })
 
 module.exports =  router
