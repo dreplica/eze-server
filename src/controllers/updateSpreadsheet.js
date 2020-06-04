@@ -1,7 +1,7 @@
-const auth = require('../../config');
-const { buyModel, sellModel } = require('../model/mongooseModel');
-const { sellProductsData, buyProductsData } = require('./getSpreadsheet');
 const mongoose = require('mongoose');
+const auth = require('../../config');
+// const { buyModel, sellModel } = require('../model/mongooseModel');
+const { setProductsData } = require('./getSpreadsheet');
 
 const updateHandler = async (data, model) => {
 	// await data.forEach((item) => {
@@ -15,15 +15,15 @@ const updateHandler = async (data, model) => {
 	// })
 };
 
-const updateBuyModel = async () => {
+const updateModel = async (obj) => {
 	try {
-		const data = await buyProductsData(await auth);
-		buyModel.find(async (err, res) => {
-			if (err) updateHandler(data, buyModel);
+		const data = await setProductsData(await auth,obj.Xpath);
+		obj.model.find(async (err, res) => {
+			if (err) updateHandler(data, obj.model);
 			else {
-				await mongoose.connection.db.dropCollection('buys', (res) => {
+				await mongoose.connection.db.dropCollection(obj.purpose, (res) => {
 					console.log('checking ', res);
-					updateHandler(data, buyModel);
+					updateHandler(data, obj.model);
 				});
 			}
 		});
@@ -32,24 +32,23 @@ const updateBuyModel = async () => {
 	}
 };
 
-const updateSellModel = async () => {
-	try {
-		const data = await sellProductsData(await auth);
-		buyModel.find(async (err, res) => {
-			if (err) updateHandler(data, sellModel);
-			else {
-				await mongoose.connection.db.dropCollection('sells', (res) => {
-					console.log('checking ', res);
-					updateHandler(data, sellModel);
-				});
-			}
-		});
-	} catch (error) {
-		console.log(error);
-	}
-};
+// const updateSellModel = async () => {
+// 	try {
+// 		const data = await sellProductsData(await auth);
+// 		buyModel.find(async (err, res) => {
+// 			if (err) updateHandler(data, sellModel);
+// 			else {
+// 				await mongoose.connection.db.dropCollection('sells', (res) => {
+// 					console.log('checking ', res);
+// 					updateHandler(data, sellModel);
+// 				});
+// 			}
+// 		});
+// 	} catch (error) {
+// 		console.log(error);
+// 	}
+// };
 
 module.exports = {
-	updateBuyModel,
-	updateSellModel
+	updateModel,
 };

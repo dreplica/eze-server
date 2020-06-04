@@ -7,19 +7,17 @@ const iphoneSchema = new mongoose.Schema({
 			_id: false,
 			locked: Boolean,
 			memory: String,
-			price: [
-				{
-					NEW: String,
-					_id: false,
-					A1: String,
-					A2: String,
-					B1: String,
-					B2: String,
-					C: String,
-					'C/B': String,
-					'C/D': String
-				}
-			]
+			price: {
+				_id: false,
+				NEW: String,
+				A1: String,
+				A2: String,
+				B1: String,
+				B2: String,
+				C: String,
+				'C/B': String,
+				'C/D': String
+			}
 		}
 	]
 });

@@ -1,7 +1,8 @@
 const express = require('express');
 const { getBuyProduts, getSellProducts, searchProducts } = require('../controllers/products');
 const { updateToken } = require('../controllers/apiAuth');
-const { updateSellModel, updateBuyModel } = require('../controllers/updateSpreadsheet');
+const { updateModel, updateBuyModel } = require('../controllers/updateSpreadsheet');
+const { sellModel, buyModel } = require('../model/mongooseModel');
 
 const router = express.Router();
 
@@ -17,9 +18,11 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/update', async (req, res) => {
+	const buyPath = { Xpath: 'IPHONES!A3:J', purpose: 'buys',model:buyModel }
+	const sellPath = { Xpath: 'IPHONES!L3:U', purpose: 'sells',model:sellModel }
 	try {
-		await updateBuyModel();
-		await updateSellModel();
+		await updateModel(buyPath);
+		await updateModel(sellPath);
 		return res.status(200).json({ status: 'refreshed' });
 	} catch (error) {
 		console.log(error);
