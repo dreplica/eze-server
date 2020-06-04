@@ -1,25 +1,14 @@
 const mongoose = require('mongoose');
 
 const iphoneSchema = new mongoose.Schema({
+	_id: false,
+	condition: String,
+	image: String,
+	locked: String,
+	memory: String,
 	phone: String,
-	spec: [
-		{
-			_id: false,
-			locked: Boolean,
-			memory: String,
-			price: {
-				_id: false,
-				NEW: String,
-				A1: String,
-				A2: String,
-				B1: String,
-				B2: String,
-				C: String,
-				'C/B': String,
-				'C/D': String
-			}
-		}
-	]
+	price: String,
+	sell: String
 });
 
 const buyModel = mongoose.model('Buy', iphoneSchema);

@@ -1,7 +1,7 @@
 // import { sellModel,buyModel } from "../model/mongooseModel";
 
 const { buyModel, sellModel } = require('../model/mongooseModel');
-const { filterSearch } = require('../logic/searcj');
+const { filterSearch } = require('../logic/search');
 
 const searchProducts = async (params) => {
 	try {
@@ -15,11 +15,12 @@ const getBuyProduts = async () => {
 	try {
 		const page = 1;
 		const pagination = 10;
-		const buyProduct = await buyModel.find().skip().limit(10);
+		const buyProduct = await buyModel.find();
 		console.log(buyProduct);
 		return buyProduct;
 	} catch (error) {
 		console.log(error);
+		return { error }
 	}
 };
 
@@ -27,11 +28,12 @@ const getSellProducts = async () => {
 	try {
 		const page = 1;
 		const pagination = 10;
-		const buyProduct = await sellModel.find().skip().limit(10);
+		const buyProduct = await sellModel.find();
 		console.log(buyProduct);
 		return buyProduct;
 	} catch (error) {
 		console.log(error);
+		return { error }
 	}
 };
 
@@ -52,16 +54,16 @@ const searcherFunc = async (inclomingVal) => {
 		const getBuy = await buyModel.find({
 			$or: [
 				{ phone: { $regex: reg } },
-				{ 'spec.memory': { $regex: reg } },
-				{ [`spec.price.${type}`]: { $exists: true } }
+				{ memory: { $regex: reg } },
+				{ condition: type }
 			]
 		});
 		console.log('passed here');
 		const getSell = await sellModel.find({
 			$or: [
 				{ phone: { $regex: reg } },
-				{ 'spec.memory': { $regex: reg } },
-				{ [`spec.price.${type}`]: { $exists: true } }
+				{ memory: { $regex: reg } },
+				{ condition: type }
 			]
 		});
 		return { buy: getBuy, sell: getSell };
@@ -72,13 +74,12 @@ const searcherFunc = async (inclomingVal) => {
 		const reg = new RegExp(arr[0], 'i');
 		const getBuy = await buyModel.find({
 			phone: { $regex: reg },
-			[`spec.price.${arr[1]}`]: { $exists: true }
+			condition:type
 		});
 		const getSell = await sellModel.find({
 			phone: { $regex: reg },
-			[`spec.price.${arr[1]}`]: { $exists: true }
+			condition:type
 		});
-		console.log(getBuy);
 		return { buy: getBuy, sell: getSell };
 	};
 
@@ -87,13 +88,13 @@ const searcherFunc = async (inclomingVal) => {
 		const regSize = new RegExp(arr[2], 'i');
 		const getBuy = await buyModel.find({
 			phone: { $regex: reg },
-			[`spec.price.${arr[1]}`]: { $exists: true },
-			'spec.memory': { $regex: regSize }
+			memory: { $regex: regSize },
+			condition: type,
 		});
 		const getSell = await sellModel.find({
 			phone: { $regex: reg },
-			[`spec.price.${arr[1]}`]: { $exists: true },
-			'spec.memory': { $regex: regSize }
+			memory: { $regex: regSize },
+			condition: type,
 		});
 		return { buy: getBuy, sell: getSell };
 	};

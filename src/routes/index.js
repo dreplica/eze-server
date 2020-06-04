@@ -1,7 +1,7 @@
 const express = require('express');
 const { getBuyProduts, getSellProducts, searchProducts } = require('../controllers/products');
 const { updateToken } = require('../controllers/apiAuth');
-const { updateModel, updateBuyModel } = require('../controllers/updateSpreadsheet');
+const { updateModel, updateBuyModel } = require('../logic/updateSpreadsheet');
 const { sellModel, buyModel } = require('../model/mongooseModel');
 
 const router = express.Router();

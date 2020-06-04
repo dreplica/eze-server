@@ -1,7 +1,7 @@
 const filterSearch = (searchResult, arr) => {
 	const Buyseperate = searchResult.buy.map((item) => ({ ...item._doc, market: 'buy' }));
 	const Sellseperate = searchResult.sell.map((item) => ({ ...item._doc, market: 'sell' }));
-	const result = [ ...Buyseperate, ...Sellseperate ];
+	const result = [...Buyseperate, ...Sellseperate];
 	switch (arr.length) {
 		case 1:
 			const val = new RegExp(arr[0], 'i');
@@ -15,20 +15,26 @@ const filterSearch = (searchResult, arr) => {
 					return item;
 				}
 
-				const price = item.spec.map((cost) => {
-					const checkPrice = cost.price.filter((test) => test[type]);
-					if (checkPrice.length) {
-						cost.price = checkPrice;
-						return cost;
+				const price = item.spec.reduce((acc, cost) => {
+					const currentPrice = cost
+					if (cost.price[type]) {
+						// console.log("the bitter truth", cost.price[type])
+						currentPrice.price = cost.price[type];
+						// cost.price = cost.price[type]
+						acc.push(currentPrice)
+						// console.log(cost.price)
+						return acc
 					}
-				});
-
+					return acc;
+				},[])
+				console.log("this is price",price)
 				if (price.length) {
+					// console.log("this is price",price)
 					item.spec = price;
 					return item;
 				}
 
-				return item;
+				return [];
 			});
 		case 2:
 			const phone2 = new RegExp(arr[0], 'i');
@@ -65,7 +71,7 @@ const filterSearch = (searchResult, arr) => {
 					});
 
 					if (price.length) {
-                        const memorySearch = price.filter((memory) => size.test(memory.memory));
+						const memorySearch = price.filter((memory) => size.test(memory.memory));
 						if (memorySearch.length) {
 							item.spec = memorySearch;
 							return item;

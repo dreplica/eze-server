@@ -29,7 +29,8 @@ async function mongo_events() {
     await mongoose.connection.on("disconnected", mongo_disconnect);
     await mongoose.connection.on("error", mongo_error);
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
+    process.exit()
   }
 }
 
