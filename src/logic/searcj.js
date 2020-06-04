@@ -66,7 +66,6 @@ const filterSearch = (searchResult, arr) => {
 
 					if (price.length) {
                         const memorySearch = price.filter((memory) => size.test(memory.memory));
-						console.log(memorySearch);
 						if (memorySearch.length) {
 							item.spec = memorySearch;
 							return item;
