@@ -11,8 +11,6 @@ const buyModelLength = async () => await buyModel.estimatedDocumentCount()
 const sellModelLength = async () => await sellModel.estimatedDocumentCount()
 /* GET home page. */
 router.get('/', async (req, res) => {
-	//here would fetch phones on a random
-	console.log("this is that length", await buyModelLength())
 	if (req.query['code']) {
 		const code = req.query['code'];
 		console.log('coding code', code);
@@ -30,6 +28,7 @@ router.get('/update', async (req, res) => {
 		return res.status(200).json({ status: 'refreshed' });
 	} catch (error) {
 		console.log(error);
+		return res.status(500).json({ status: "server error, contact admin" })
 	}
 });
 
