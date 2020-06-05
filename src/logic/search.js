@@ -1,89 +1,63 @@
-const filterSearch = (searchResult, arr) => {
-	const Buyseperate = searchResult.buy.map((item) => ({ ...item._doc, market: 'buy' }));
-	const Sellseperate = searchResult.sell.map((item) => ({ ...item._doc, market: 'sell' }));
-	const result = [...Buyseperate, ...Sellseperate];
+const { buyModel, sellModel } = require("../model/mongooseModel");
+
+const searcherFunc = async (inclomingVal, filters = []) => {
+	const arr = inclomingVal.map((items) => items.toLocaleUpperCase());
+
 	switch (arr.length) {
 		case 1:
-			const val = new RegExp(arr[0], 'i');
-			const type = arr[0].toLocaleUpperCase();
-			return result.map((item) => {
-				if (val.test(item.phone)) return item;
-
-				const memory = item.spec.filter((memory) => val.test(memory.memory));
-				if (memory.length) {
-					item.spec = memory;
-					return item;
-				}
-
-				const price = item.spec.reduce((acc, cost) => {
-					const currentPrice = cost
-					if (cost.price[type]) {
-						// console.log("the bitter truth", cost.price[type])
-						currentPrice.price = cost.price[type];
-						// cost.price = cost.price[type]
-						acc.push(currentPrice)
-						// console.log(cost.price)
-						return acc
-					}
-					return acc;
-				},[])
-				console.log("this is price",price)
-				if (price.length) {
-					// console.log("this is price",price)
-					item.spec = price;
-					return item;
-				}
-
-				return [];
-			});
+			const firstBuy = await singleGetter(arr[0], buyModel);
+			const firstSell = await singleGetter(arr[0], sellModel);
+			return [...firstSell, ...firstBuy]
 		case 2:
-			const phone2 = new RegExp(arr[0], 'i');
-			const type2 = arr[1].toLocaleUpperCase();
-			return result.filter((item) => {
-				if (phone2.test(item.phone)) {
-					const price = item.spec.map((cost) => {
-						const checkPrice = cost.price.filter((test) => test[type2]);
-						if (checkPrice.length) {
-							cost.price = checkPrice;
-							return cost;
-						}
-					});
-
-					if (price.length) {
-						item.spec = price;
-						return item;
-					}
-				}
-			});
-
+			const secBuy = await doubleSearch(arr, buyModel);
+			const secSell = await doubleSearch(arr, sellModel);
+			return [...secBuy, ...secSell]
 		case 3:
-			const phone3 = new RegExp(arr[0], 'i');
-			const type3 = arr[1].toLocaleUpperCase();
-			const size = new RegExp(arr[2], 'i');
-			return result.filter((item) => {
-				if (phone3.test(item.phone)) {
-					const price = item.spec.map((cost) => {
-						const checkPrice = cost.price.filter((test) => test[type3]);
-						if (checkPrice.length) {
-							cost.price = checkPrice;
-							return cost;
-						}
-					});
-
-					if (price.length) {
-						const memorySearch = price.filter((memory) => size.test(memory.memory));
-						if (memorySearch.length) {
-							item.spec = memorySearch;
-							return item;
-						}
-					}
-				}
-			});
+			console.log("whatsup")
+			const thirdBuy = await fullSearch(arr, buyModel);
+			const thirdSell = await fullSearch(arr, sellModel);
+			console.log(thirdBuy)
+			return [...thirdBuy, ...thirdSell]
 		default:
 			return [];
 	}
 };
 
-module.exports = {
-	filterSearch
+const singleGetter = async (val, model) => {
+	const reg = new RegExp(val, 'i');
+
+	const search = await model.find({
+		$or: [
+			{ phone: { $regex: reg } },
+			{ memory: { $regex: reg } },
+			{ condition: { $regex: reg } }
+		]
+	});
+	return search;
 };
+
+const doubleSearch = async (arr, model) => {
+	const reg = new RegExp(arr[0], 'i');
+	const type = new RegExp(arr[1], 'i');
+
+	const search = await model.find({
+		phone: { $regex: reg },
+		condition: { $regex: type }
+	});
+	return search;
+};
+
+const fullSearch = async (arr, model) => {
+	const reg = new RegExp(arr[0], 'i');
+	const regSize = new RegExp(arr[2], 'i');
+	const type = new RegExp(arr[1], 'i');
+
+	const search = await model.find({
+		phone: { $regex: reg },
+		memory: { $regex: regSize },
+		condition: { $regex: type },
+	});
+	return search;
+};
+
+module.exports = searcherFunc
