@@ -14,10 +14,16 @@ const searcherFunc = async (arr, page, limit, filter) => {
 
 
 	switch (arr.length) {
+		case 0:
+			return [];
+
 		case 1:
-			const firstBuy = await singleGetter(arr[0], buyModel, page, limit, filter);
-			const firstSell = await singleGetter(arr[0], sellModel, page, limit, filter);
-			return [...firstSell, ...firstBuy]
+			const val = parseInt(arr[0]) 
+			const size = val? { low: val, high: val,sort:filter.sort } : filter;
+			const firstBuy = await singleGetter(arr[0], buyModel, page, limit, size);
+			const firstSell = await singleGetter(arr[0], sellModel, page, limit, size);
+			return [...firstSell, ...firstBuy].sort(sortBothTables)
+		
 		case 2:
 			const secBuy = await doubleSearch(arr, buyModel, page, limit, filter);
 			const secSell = await doubleSearch(arr, sellModel, page, limit, filter);
@@ -34,15 +40,18 @@ const searcherFunc = async (arr, page, limit, filter) => {
 };
 
 const singleGetter = async (val, model, page, limit, filter) => {
-	const reg = new RegExp(val, 'i');
-
+	const reg = new RegExp(val, 'ig');
+	console.log(filter)
 	const search = await model.find({
 		'memory': { $gte: filter.low, $lte: filter.high },
-		$or: [
-			{ phone: { $regex: reg } },
-			{ memory: parseInt(val) ? parseInt(val) : { $exists: true } },
-			{ condition: { $regex: reg } }
-		]
+		$and: [
+			{
+				$or: [
+					{ phone: { $regex: reg } },
+					{memory:filter.low},
+					{ condition: { $regex: reg } }
+				]
+			}]
 	}).skip(page).limit(limit).sort({ price: filter.sort })
 	return search;
 };
