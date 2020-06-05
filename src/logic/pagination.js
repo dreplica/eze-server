@@ -1,7 +1,9 @@
 
-const pagination = (length) => async (req, res, next) => {
+const pagination = (buyLength=0,sellLength=0) => async (req, res, next) => {
     if (!req.query.page) return next();
-    console.log(await length)
+
+    const length = await buyLength + await sellLength
+    console.log("this is length",length)
     const page = parseInt(req.query.page)
     const limit = parseInt(req.query.limit)
 

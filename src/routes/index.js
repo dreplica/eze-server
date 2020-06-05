@@ -1,5 +1,5 @@
 const express = require('express');
-const { getProducts, searchProducts } = require('../controllers/products');
+const { getProducts, searchProducts, getAllProducts } = require('../controllers/products');
 const { updateToken } = require('../controllers/apiAuth');
 const { updateModel, updateBuyModel } = require('../logic/updateSpreadsheet');
 const { sellModel, buyModel } = require('../model/mongooseModel');
@@ -9,13 +9,23 @@ const router = express.Router();
 
 const buyModelLength = async () => await buyModel.estimatedDocumentCount()
 const sellModelLength = async () => await sellModel.estimatedDocumentCount()
+
 /* GET home page. */
-router.get('/', async (req, res) => {
-	if (req.query['code']) {
-		const code = req.query['code'];
-		console.log('coding code', code);
-		await updateToken(code);
-		return res.status(200).send('configured');
+router.get('/', pagination(buyModelLength(),sellModelLength()), async (req, res) => {
+	try {
+		if (req.query['code']) {
+			const code = req.query['code'];
+			console.log('coding code', code);
+			await updateToken(code);
+			return res.status(200).send('configured');
+		}
+		const result = await getAllProducts(req.startPoint, req.limit, req.filter)
+
+		if (result.error) return res.status(404).json({ error: "not found" })
+
+		return res.status(200).json({ ...req.pagination, result })
+	} catch (error) {
+		return res.status(404).json({ error: "request not found" })
 	}
 });
 
@@ -33,7 +43,7 @@ router.get('/update', async (req, res) => {
 });
 
 router.get('/buy', pagination(buyModelLength()), async (req, res) => {
-	const product = await getProducts(buyModel, req.startPoint, req.limit);
+	const product = await getProducts(buyModel, req.startPoint, req.limit, req.query.filter);
 	if (product.error) {
 		return res.status(404).json({ error: "request not found" })
 	}
@@ -41,7 +51,7 @@ router.get('/buy', pagination(buyModelLength()), async (req, res) => {
 });
 
 router.get('/sell', pagination(sellModelLength()), async (req, res) => {
-	const product = await getProducts(sellModel, req.startPoint, req.limit);
+	const product = await getProducts(sellModel, req.startPoint, req.limit, req.query.filter);
 	if (product.error) {
 		return res.status(404).json({ error: "request not found" })
 	}
