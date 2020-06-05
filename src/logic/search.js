@@ -1,7 +1,17 @@
 const { buyModel, sellModel } = require("../model/mongooseModel");
 
 const searcherFunc = async (arr, page, limit, filter) => {
-	// const arr = search.map((items) => items.toLocaleUpperCase());
+
+	//because both tables are queried differently, need to sort them
+	const sortBothTables = (a, b) => {
+		if (filter.sort === "1") {
+			console.log("wow")
+			if (a.price - b.price < 0) return 1;
+			return -1;
+		}
+		return 1;
+	}
+
 
 	switch (arr.length) {
 		case 1:
@@ -11,13 +21,13 @@ const searcherFunc = async (arr, page, limit, filter) => {
 		case 2:
 			const secBuy = await doubleSearch(arr, buyModel, page, limit, filter);
 			const secSell = await doubleSearch(arr, sellModel, page, limit, filter);
-			return [...secBuy, ...secSell]
+			return [...secBuy, ...secSell].sort(sortBothTables)
 		case 3:
 			console.log("whatsup")
 			const thirdBuy = await fullSearch(arr, buyModel, page, limit, filter);
 			const thirdSell = await fullSearch(arr, sellModel, page, limit, filter);
 			console.log(thirdBuy)
-			return [...thirdBuy, ...thirdSell]
+			return [...thirdBuy, ...thirdSell].sort(sortBothTables)
 		default:
 			return [];
 	}
@@ -26,11 +36,12 @@ const searcherFunc = async (arr, page, limit, filter) => {
 const singleGetter = async (val, model, page, limit, filter) => {
 	const reg = new RegExp(val, 'i');
 
-	const search = await model.find({'memory': { $gte: filter.low, $lte: filter.high },
+	const search = await model.find({
+		'memory': { $gte: filter.low, $lte: filter.high },
 		$or: [
 			{ phone: { $regex: reg } },
 			{ memory: parseInt(val) ? parseInt(val) : { $exists: true } },
-			{ condition: { $regex: reg }}
+			{ condition: { $regex: reg } }
 		]
 	}).skip(page).limit(limit).sort({ price: filter.sort })
 	return search;
@@ -52,6 +63,8 @@ const fullSearch = async (arr, model, page, limit, filter) => {
 	const reg = new RegExp(arr[0], 'i');
 	const regSize = parseInt(arr[2]);
 	const type = new RegExp(arr[1], 'i');
+
+	console.log("this is sort", filter.sort)
 
 	const search = await model.find({
 		phone: { $regex: reg },

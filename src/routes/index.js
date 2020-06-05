@@ -73,7 +73,7 @@ router.post('/search', pagination(buyModelLength(), sellModelLength()), async (r
 
 	if (result.error) return res.status(404).json({ error: "search not found" })
 
-	return res.status(200).json(result);
+	return res.status(200).json({...req.pagination ,result});
 });
 
 module.exports = router;
