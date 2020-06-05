@@ -5,7 +5,7 @@ const iphoneSchema = new mongoose.Schema({
 	condition: String,
 	image: String,
 	locked: String,
-	memory: String,
+	memory: Number,
 	phone: String,
 	price: String,
 	sell: String

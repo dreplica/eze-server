@@ -19,10 +19,11 @@ router.get('/', pagination(buyModelLength(),sellModelLength()), async (req, res)
 			await updateToken(code);
 			return res.status(200).send('configured');
 		}
-		const result = await getAllProducts(req.startPoint, req.limit, req.filter)
+		const result = await getAllProducts(req.startPoint, req.limit, req.query.filter)
 
 		if (result.error) return res.status(404).json({ error: "not found" })
-
+		if (!result.length) req.pagination.forward = {}
+		
 		return res.status(200).json({ ...req.pagination, result })
 	} catch (error) {
 		return res.status(404).json({ error: "request not found" })
@@ -44,6 +45,8 @@ router.get('/update', async (req, res) => {
 
 router.get('/buy', pagination(buyModelLength()), async (req, res) => {
 	const product = await getProducts(buyModel, req.startPoint, req.limit, req.query.filter);
+	if (!product.length) req.pagination.forward = {}
+
 	if (product.error) {
 		return res.status(404).json({ error: "request not found" })
 	}
@@ -52,6 +55,8 @@ router.get('/buy', pagination(buyModelLength()), async (req, res) => {
 
 router.get('/sell', pagination(sellModelLength()), async (req, res) => {
 	const product = await getProducts(sellModel, req.startPoint, req.limit, req.query.filter);
+	if (!product.length) req.pagination.forward = {}
+
 	if (product.error) {
 		return res.status(404).json({ error: "request not found" })
 	}
@@ -61,8 +66,8 @@ router.get('/sell', pagination(sellModelLength()), async (req, res) => {
 
 
 router.post('/search', async (req, res) => {
-	const parameters = req.body['search'];
-	const search = await searchProducts(parameters);
+	const {filter,limit,page} = req.body;
+	const search = await searchProducts(filter);
 	console.log;
 	return res.status(200).json(search);
 });

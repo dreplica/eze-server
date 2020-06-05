@@ -21,7 +21,7 @@ const distributeVaues = (arr = []) => {
 				break;
 
 			case 1:
-				itemStructure.memory = item;
+				itemStructure.memory = item.match(/\d+/)[0];
 				break;
 
 			default:
