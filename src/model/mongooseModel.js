@@ -7,7 +7,7 @@ const iphoneSchema = new mongoose.Schema({
 	locked: String,
 	memory: Number,
 	phone: String,
-	price: String,
+	price: Number,
 	sell: String
 });
 

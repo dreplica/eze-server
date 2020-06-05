@@ -25,7 +25,7 @@ const distributeVaues = (arr = []) => {
 				break;
 
 			default:
-				itemStructure.price[condition[count]] = (item);
+				itemStructure.price[condition[count]] = parseInt((item).replace(/\D/g, ""));
 				count += 1;
 				break;
 		}
