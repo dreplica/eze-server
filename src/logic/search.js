@@ -1,8 +1,8 @@
 const { buyModel, sellModel } = require("../model/mongooseModel");
 
-const searcherFunc = async (arr, page, limit, filter) => {
+//because both tables are queried differently, need to sort them
 
-	//because both tables are queried differently, need to sort them
+const searcherFunc = async (arr, page, limit, filter) => {
 	const sortBothTables = (a, b) => {
 		if (filter.sort === "1") {
 			console.log("wow")
@@ -11,8 +11,7 @@ const searcherFunc = async (arr, page, limit, filter) => {
 		}
 		return 1;
 	}
-
-
+	
 	switch (arr.length) {
 		case 0:
 			return [];

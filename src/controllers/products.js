@@ -15,12 +15,29 @@ const searchProducts = async (search, page = 0, limit = 5, filter = '1,') => {
 };
 
 const getAllProducts = async (start = 0, limit = 5, filter = '1,') => {
-	console.log("%cna the filter, {color:red}", filter)
+	
+	const [sort] = filter.split(",")
+	const sortBothTables = (a, b) => {
+		if (sort === "1") {
+			if (a.price - b.price < 0) return 1;
+			return -1;
+		}
+		return 1;
+	}
+	
 	try {
 		const buyPhone = await getProducts(buyModel, start, limit, filter)
 		const sellPhone = await getProducts(sellModel, start, limit, filter)
 
-		return [...buyPhone, ...sellPhone]
+		const result = [...buyPhone,...sellPhone]
+
+
+		switch (sort) {
+			case "1"|'-1':
+				return result.sort(sortBothTables)
+			default:
+				return result;
+		}
 
 	} catch (error) {
 		return { error }
