@@ -6,7 +6,7 @@
     "node": "12.x"
   },
   "scripts": {
-    "start": "yarn build && node dist/bin/www",
+    "start": " node dist/bin/www",
     "build": "rimraf dist/ && babel ./ --out-dir dist/ --ignore ./node_modules,./.babelrc,./package.json --copy-files"
   },
   "dependencies": {
