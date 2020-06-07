@@ -33,7 +33,7 @@ const distributeVaues = (arr = []) => {
 	return itemStructure;
 };
 
-async function setProductsData(auth,Xpath,purpose) {
+export async function setProductsData(auth,Xpath,purpose) {
 	return new Promise((resolve, reject) => {
 		const sheets = google.sheets({ version: 'v4', auth });
 		sheets.spreadsheets.values.get(
@@ -82,6 +82,6 @@ async function setProductsData(auth,Xpath,purpose) {
 	});
 }
 
-module.exports = {
-	setProductsData,
-};
+// module.exports = {
+// 	setProductsData,
+// };

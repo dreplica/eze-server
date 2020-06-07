@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose'
 
 const iphoneSchema = new mongoose.Schema({
 	_id: false,
@@ -11,10 +11,10 @@ const iphoneSchema = new mongoose.Schema({
 	sell: String
 });
 
-const buyModel = mongoose.model('Buy', iphoneSchema);
-const sellModel = mongoose.model('Sell', iphoneSchema);
+export const buyModel = mongoose.model('Buy', iphoneSchema);
+export const sellModel = mongoose.model('Sell', iphoneSchema);
 
-module.exports = {
-	buyModel,
-	sellModel
-};
+// module.exports = {
+// 	buyModel,
+// 	sellModel
+// };

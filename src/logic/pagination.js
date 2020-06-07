@@ -20,4 +20,4 @@ const pagination = (buyLength=0,sellLength=0) => async (req, res, next) => {
 
 }
 
-module.exports = pagination
+export default pagination

@@ -1,4 +1,4 @@
-const { buyModel, sellModel } = require("../model/mongooseModel");
+import { buyModel, sellModel } from "../model/mongooseModel"
 
 //because both tables are queried differently, need to sort them
 
@@ -6,10 +6,9 @@ const searcherFunc = async (arr, page, limit, filter) => {
 	const sortBothTables = (a, b) => {
 		if (filter.sort === "1") {
 			console.log("wow")
-			if (a.price - b.price < 0) return 1;
-			return -1;
+			return (a.price < b.price)?-1:1;
 		}
-		return 1;
+		return (a.price > b.price) ? -1 :1;
 	}
 	
 	switch (arr.length) {
@@ -82,4 +81,4 @@ const fullSearch = async (arr, model, page, limit, filter) => {
 	return search;
 };
 
-module.exports = searcherFunc
+export default searcherFunc

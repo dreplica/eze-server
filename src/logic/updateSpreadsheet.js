@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
-const auth = require('../../config');
-const { setProductsData } = require('./getSpreadsheet');
-const arrangeData = require('./arrangeData');
+import  mongoose from 'mongoose'
+import auth from '../../config'
+import { setProductsData } from './getSpreadsheet'
+import arrangeData from './arrangeData'
 
 const updateHandler = async (data, model) => {
 	try {
@@ -11,7 +11,7 @@ const updateHandler = async (data, model) => {
 	}
 };
 
-const updateModel = async (obj) => {
+export const updateModel = async (obj) => {
 	try {
 		const data = await setProductsData(await auth, obj.Xpath, obj.purpose);
 		const result = arrangeData(data)
@@ -30,6 +30,6 @@ const updateModel = async (obj) => {
 };
 
 
-module.exports = {
-	updateModel,
-};
+// module.exports = {
+// 	updateModel,
+// };

@@ -1,8 +1,8 @@
 
-const searcherFunc = require('../logic/search');
-const { buyModel, sellModel } = require('../model/mongooseModel');
+import searcherFunc from '../logic/search'
+import { buyModel, sellModel } from '../model/mongooseModel'
 
-const searchProducts = async (search, page = 0, limit = 5, filter = '1,') => {
+export const searchProducts = async (search, page = 0, limit = 5, filter = '1,') => {
 	const [sort, size] = filter.split(",")
 	const high = !size ? Infinity : size
 	const low = !size ? 0 : size
@@ -14,7 +14,7 @@ const searchProducts = async (search, page = 0, limit = 5, filter = '1,') => {
 	}
 };
 
-const getAllProducts = async (start = 0, limit = 5, filter = '1,') => {
+export const getAllProducts = async (start = 0, limit = 5, filter = '1,') => {
 	
 	const [sort] = filter.split(",")
 	const sortBothTables = (a, b) => {
@@ -44,7 +44,7 @@ const getAllProducts = async (start = 0, limit = 5, filter = '1,') => {
 	}
 }
 
-const getProducts = async (Model, start = 0, limit = 10, filter = '1,') => {
+export const getProducts = async (Model, start = 0, limit = 10, filter = '1,') => {
 	try {
 		const [sort, size] = filter.split(",")
 		const high = !size ? Infinity : size
@@ -63,8 +63,8 @@ const getProducts = async (Model, start = 0, limit = 10, filter = '1,') => {
 };
 
 
-module.exports = {
-	getProducts,
-	getAllProducts,
-	searchProducts
-};
+// module.exports = {
+// 	getProducts,
+// 	getAllProducts,
+// 	searchProducts
+// };

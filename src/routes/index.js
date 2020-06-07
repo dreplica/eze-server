@@ -1,9 +1,9 @@
-const express = require('express');
-const { getProducts, searchProducts, getAllProducts } = require('../controllers/products');
-const { updateToken } = require('../controllers/apiAuth');
-const { updateModel } = require('../logic/updateSpreadsheet');
-const { sellModel, buyModel } = require('../model/mongooseModel');
-const pagination = require('../logic/pagination');
+import  express  from 'express'
+import  { getProducts, searchProducts, getAllProducts }  from '../controllers/products'
+import  { updateToken }  from '../controllers/apiAuth'
+import  { updateModel }  from '../logic/updateSpreadsheet'
+import  { sellModel, buyModel }  from '../model/mongooseModel'
+import  pagination  from '../logic/pagination'
 
 const router = express.Router();
 
@@ -67,9 +67,10 @@ router.get('/sell', pagination(sellModelLength()), async (req, res) => {
 
 router.post('/search', pagination(buyModelLength(), sellModelLength()), async (req, res) => {
 	const { search, filter } = req.body;
-	console.log(search,"and",filter)
+	console.log(search, "and", filter)
+	
 	const result = await searchProducts(search, req.startPoint, req.limit, filter);
-	console.log("the result", result)
+
 	if (!result.length) req.pagination.forward = {}
 
 	if (result.error) return res.status(404).json({ error: "search not found" })
@@ -77,4 +78,4 @@ router.post('/search', pagination(buyModelLength(), sellModelLength()), async (r
 	return res.status(200).json({...req.pagination ,result});
 });
 
-module.exports = router;
+export default router;

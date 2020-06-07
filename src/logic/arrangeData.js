@@ -1,4 +1,4 @@
-function arrangeData(data) {
+export function arrangeData(data) {
     // const { previous, next, result } = data;
     const result = data;
 
@@ -23,7 +23,7 @@ function arrangeData(data) {
 }
 
 
-const getIndividualPhones = (spec) => {
+export const getIndividualPhones = (spec) => {
     return spec.reduce((acc, val) => {
         const memory = val.memory
         const locked = val.locked
@@ -40,4 +40,4 @@ const getIndividualPhones = (spec) => {
     }, [])
 }
 
-module.exports = arrangeData
+export default arrangeData

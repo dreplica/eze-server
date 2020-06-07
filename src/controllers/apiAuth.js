@@ -1,8 +1,8 @@
-const auth = require('../../config')
-const fs = require('fs')
+import  auth from '../../config'
+import fs from 'fs'
 const TOKEN_PATH = 'token.json'
 
-const updateToken = async (code) => {
+export const updateToken = async (code) => {
     const oAuth2Client = await auth
     console.log("auth", oAuth2Client)
     oAuth2Client.getToken(code, (err, token) => {
@@ -17,8 +17,4 @@ const updateToken = async (code) => {
             console.log('Token stored to', TOKEN_PATH);
         });
     })
-}
-
-module.exports = {
-    updateToken
 }

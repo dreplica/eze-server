@@ -1,5 +1,5 @@
-const fs = require('fs');
-const { google } = require('googleapis');
+import fs from 'fs'
+import { google } from 'googleapis'
 
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly' ];
 const TOKEN_PATH = 'token.json';
@@ -34,4 +34,4 @@ function getNewToken(oAuth2Client) {
     return oAuth2Client
 }
 
-module.exports = config()
+export default config()

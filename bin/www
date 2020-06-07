@@ -1,10 +1,11 @@
 #!/usr/bin/env node
+require("regenerator-runtime/runtime");
 require('dotenv').config();
 /**
  * Module dependencies.
  */
 
-var app = require('../app');
+var app = require('../app').default;
 var debug = require('debug')('eze-test:server');
 var http = require('http');
 const mongoose = require('mongoose')
