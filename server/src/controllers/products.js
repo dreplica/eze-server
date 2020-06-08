@@ -44,16 +44,15 @@ import phoneModel from '../model/mongooseModel'
 // 	}
 // }
 
-// export const getProducts = async (sell, start = 0, limit = 10, filter = '1,') => {
-export const getProducts = async (start = 0, limit = 10, { sell = '', sort = "", size = "", condition = "" }) => {
+export const getProducts = async (start = 0, limit = 10, { sell = /\w/, sort = "", size = "", condition = /\w/ }) => {
 	try {
 		const high = !size ? Infinity : size
 		const low = !size ? 0 : size
 
 		const Product = await phoneModel.find(
 			{
-				sell: { $regex: sell },
-				condition: { $regex: condition },
+				sell: { $regex: sell, $options: "i" },
+				condition: { $regex: condition, $options: "i" },
 				memory: { $gte: low, $lte: high }
 			})
 
