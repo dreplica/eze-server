@@ -1,5 +1,6 @@
 import  auth from '../../config'
 import fs from 'fs'
+
 const TOKEN_PATH = 'token.json'
 
 export const updateToken = async (code) => {

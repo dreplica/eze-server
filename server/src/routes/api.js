@@ -1,24 +1,26 @@
 import express from 'express'
-import { getProducts, getAllProducts } from '../controllers/products'
+import getProducts from '../controllers/products'
 import updateSpreadsheet from '../controllers/updateSpreadsheet'
 import pagination from '../logic/pagination'
 
-var router = express.Router();
-
+const router = express.Router();
 
 router.get('/', pagination(), async (req, res) => {
 
-	const { limit, startPoint } = req
-	const filter = req.query
+	try {
+		const { limit, startPoint } = req
+		const filter = req.query
+		const result = await getProducts(startPoint, limit, filter);
 
-	const result = await getProducts(startPoint, limit, filter);
+		if (!result.length) req.pagination.forward = {}
+		if (result.error) {
+			return res.status(404).json({ error: "request not found" })
+		}
 
-	if (!result.length) req.pagination.forward = {}
-
-	if (result.error) {
+		return res.status(200).json({ ...req.pagination, result });
+	} catch (error) {
 		return res.status(404).json({ error: "request not found" })
 	}
-	return res.status(200).json({ ...req.pagination, result });
 });
 
 
@@ -34,34 +36,38 @@ router.get('/update', async (req, res) => {
 
 
 router.get('/buy', pagination(), async (req, res) => {
+	try {
+		const { limit, startPoint } = req
+		const filter = req.query
+		const result = await getProducts(startPoint, limit, filter);
 
-	const { limit, startPoint } = req
-	const filter = req.query
+		if (!result.length) req.pagination.forward = {}
+		if (result.error) {
+			return res.status(404).json({ error: "request not found" })
+		}
 
-	const result = await getProducts(startPoint, limit, filter);
-
-	if (!result.length) req.pagination.forward = {}
-
-	if (result.error) {
+		return res.status(200).json({ ...req.pagination, result });
+	} catch (error) {
 		return res.status(404).json({ error: "request not found" })
 	}
-	return res.status(200).json({ ...req.pagination, result });
 });
 
 
 router.get('/sell', pagination(), async (req, res) => {
+	try {
+		const { limit, startPoint } = req
+		const filter = req.query
+		const result = await getProducts(startPoint, limit, filter);
 
-	const { limit, startPoint } = req
-	const filter = req.query
+		if (!result.length) req.pagination.forward = {}
+		if (result.error) {
+			return res.status(404).json({ error: "request not found" })
+		}
 
-	const result = await getProducts(startPoint, limit, filter);
-
-	if (!result.length) req.pagination.forward = {}
-
-	if (result.error) {
+		return res.status(200).json({ ...req.pagination, result });
+	} catch (error) {
 		return res.status(404).json({ error: "request not found" })
 	}
-	return res.status(200).json({ ...req.pagination, result });
 });
 
 
