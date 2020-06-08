@@ -13,8 +13,6 @@ const pagination = () => async (req, res, next) => {
 
     const length = await getPagingLength({ sell, size, condition })
 
-    console.log("making great numbers", length)
-
     const startPoint = (page - 1) * limit;
     const endPoint = page * limit
 
@@ -31,15 +29,14 @@ const pagination = () => async (req, res, next) => {
 }
 
 
-const getPagingLength = async ({ sell = /\w/, size, condition = /\w/ }) => {
+const getPagingLength = async ({ phone = /\w/, sell = /\w/, size, condition = /\w/ }) => {
 
     const high = !size ? Infinity : size
     const low = !size ? 0 : size
 
-    console.log("this is condition")
-
     return await phoneModel.countDocuments(
         {
+            phone: { $regex: phone, $options: "i" },
             sell: { $regex: sell, $options: "i" },
             condition: { $regex: condition, $options: "i" },
             memory: { $gte: low, $lte: high }

@@ -14,4 +14,3 @@ const iphoneSchema = new mongoose.Schema({
 const phoneModel = mongoose.model('phone', iphoneSchema);
 
 export default phoneModel
-// export const sellModel = mongoose.model('Sell', iphoneSchema);

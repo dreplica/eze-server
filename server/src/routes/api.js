@@ -71,6 +71,4 @@ router.get('/sell', pagination(), async (req, res) => {
 });
 
 
-
-
 export default router;

@@ -7,13 +7,15 @@ const getPhones = (arr) => {
 };
 
 const distributeValues = (arr = []) => {
+
+	const condition = ['NEW', 'A1', 'A2', 'B1', 'B2', 'C', 'C/B', 'C/D'];
+	let count = 0;
 	const itemStructure = {
 		locked: false,
 		memory: 0,
 		price: {}
 	};
-	const condition = ['NEW', 'A1', 'A2', 'B1', 'B2', 'C', 'C/B', 'C/D'];
-	let count = 0;
+	
 	arr.forEach((item, ind) => {
 		switch (ind) {
 			case 0:
@@ -33,7 +35,7 @@ const distributeValues = (arr = []) => {
 	return itemStructure;
 };
 
-export async function setProductsData(auth,Xpath,purpose) {
+export async function setProductsData(auth, Xpath, purpose) {
 	return new Promise((resolve, reject) => {
 		const sheets = google.sheets({ version: 'v4', auth });
 		sheets.spreadsheets.values.get(
@@ -55,7 +57,7 @@ export async function setProductsData(auth,Xpath,purpose) {
 								}
 								acc.model.phone = phone;
 								acc.model.sale = purpose
-								acc.model.image = phone.replace(/\s/g,"_")
+								acc.model.image = phone.replace(/\s/g, "_")
 								acc.model.spec = [];
 								acc.count += 1;
 							}
