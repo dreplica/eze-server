@@ -11,7 +11,7 @@ const iphoneSchema = new mongoose.Schema({
 	sell: String
 });
 
-export const phoneModel = mongoose.model('phone', iphoneSchema);
+const phoneModel = mongoose.model('phone', iphoneSchema);
+
+export default phoneModel
 // export const sellModel = mongoose.model('Sell', iphoneSchema);
-
-

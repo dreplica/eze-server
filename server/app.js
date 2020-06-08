@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan'
 
 import indexRouter from './src/routes/index'
-// var Router = require('./src/routes/search');
+import api from './src/routes/api'
 
 let app = express();
 
@@ -18,7 +18,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-// app.use('/auth', redirecRouter);
+app.use('/api', api);
 // app.use('/search', searchRouter);
 
 // catch 404 and forward to error handler
