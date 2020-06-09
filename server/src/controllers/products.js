@@ -1,7 +1,7 @@
 import phoneModel from '../model/mongooseModel'
 
 // exp
-const getProducts = async (start = 0, limit = 10, { phone='iphone',sell = /\w/, sort = "-1", size = "", condition = "" }) => {
+const getProducts = async (start = 0, limit = 10, { phone='iphone',sell = "", sort = "-1", size = "", condition = "" }) => {
 	try {
 		const high = !size ? Infinity : size
 		const low = !size ? 0 : size

@@ -32,10 +32,7 @@ const getPagingLength = async ({ phone = "iphone", sell = "", size = '', conditi
 
     const high = !size ? Infinity : size
     const low = !size ? 0 : size
-    // phone = phone?{$regex:phone, $options:"i"}:{$exists:true}
-    // sell = sell ? { $regex: sell, $options:"i"}:{$exists:true}
-    // condition = condition ? { $regex: condition, $options:"i"}:{$exists:true}
-    console.log(phone)
+
     return await phoneModel.find({
         memory: { $gte: low, $lte: high },
         sell: { $regex: sell, $options: "i" },

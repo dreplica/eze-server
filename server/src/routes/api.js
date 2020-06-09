@@ -35,40 +35,40 @@ router.get('/update', async (req, res) => {
 });
 
 
-router.get('/buy', pagination(), async (req, res) => {
-	try {
-		const { limit, startPoint } = req
-		const filter = req.query
-		const result = await getProducts(startPoint, limit, filter);
+// router.get('/buy', pagination(), async (req, res) => {
+// 	try {
+// 		const { limit, startPoint } = req
+// 		const filter = req.query
+// 		const result = await getProducts(startPoint, limit, filter);
 
-		if (!result.length) req.pagination.forward = {}
-		if (result.error) {
-			return res.status(404).json({ error: "request not found" })
-		}
+// 		if (!result.length) req.pagination.forward = {}
+// 		if (result.error) {
+// 			return res.status(404).json({ error: "request not found" })
+// 		}
 
-		return res.status(200).json({ ...req.pagination, result });
-	} catch (error) {
-		return res.status(404).json({ error: "request not found" })
-	}
-});
+// 		return res.status(200).json({ ...req.pagination, result });
+// 	} catch (error) {
+// 		return res.status(404).json({ error: "request not found" })
+// 	}
+// });
 
 
-router.get('/sell', pagination(), async (req, res) => {
-	try {
-		const { limit, startPoint } = req
-		const filter = req.query
-		const result = await getProducts(startPoint, limit, filter);
+// router.get('/sell', pagination(), async (req, res) => {
+// 	try {
+// 		const { limit, startPoint } = req
+// 		const filter = req.query
+// 		const result = await getProducts(startPoint, limit, filter);
 
-		if (!result.length) req.pagination.forward = {}
-		if (result.error) {
-			return res.status(404).json({ error: "request not found" })
-		}
+// 		if (!result.length) req.pagination.forward = {}
+// 		if (result.error) {
+// 			return res.status(404).json({ error: "request not found" })
+// 		}
 
-		return res.status(200).json({ ...req.pagination, result });
-	} catch (error) {
-		return res.status(404).json({ error: "request not found" })
-	}
-});
+// 		return res.status(200).json({ ...req.pagination, result });
+// 	} catch (error) {
+// 		return res.status(404).json({ error: "request not found" })
+// 	}
+// });
 
 
 export default router;
