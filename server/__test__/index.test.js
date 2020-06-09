@@ -2,10 +2,12 @@ import supertest from 'supertest';
 import mongoose from 'mongoose';
 import 'regenerator-runtime/runtime'
 
+import app from '../app'
 import mongoServer from './mongosetup/memoryserver';
 import { iphoneSchema } from '../src/model/mongooseModel';
 import { insertDb } from './dummyData';
 
+const router = supertest(app)
 
 // May require additional time for downloading MongoDB binaries
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 600000;
@@ -38,8 +40,23 @@ describe('DB and API test', () => {
         expect(newcount).toEqual(1);
     });
 
-    test('Database recieves data', async () => {
-        // const phone = 
+    test('test endpoints', async (done) => {
+        const phone = await mongoose.model('phone', iphoneSchema);
+
+        router.get('/api/')
+            .expect(200, done)
+        
+        router.get('/api/buy')
+            .expect(200, done)
+        
+        router.get('/api/sell')
+            .expect(200, done)
+        
+        router.get('/api/update')
+        .expect(200,done)
+        
     })
+
+    // test("test endpoints with filter data")
 
 });

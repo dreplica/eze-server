@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "prestart": "yarn && yarn test",
     "start": "yarn build && node dist/bin/www.js",
     "build": "babel server -d dist",
     "test": "jest"
