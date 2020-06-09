@@ -1,0 +1,7 @@
+//babel production script
+
+  "scripts": {
+    "start":"node dist/bin/www.js --exec babel-node",
+    "build": "babel server -d dist",
+    "serve": "node dist/bin/www.js"
+  }
