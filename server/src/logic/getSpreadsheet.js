@@ -15,7 +15,7 @@ const distributeValues = (arr = []) => {
 		memory: 0,
 		price: {}
 	};
-	
+
 	arr.forEach((item, ind) => {
 		switch (ind) {
 			case 0:
@@ -57,7 +57,7 @@ export async function setProductsData(auth, Xpath, purpose) {
 								}
 								acc.model.phone = phone;
 								acc.model.sale = purpose
-								acc.model.image = phone.replace(/\s/g, "_")
+								acc.model.image = phone.replace(/\s/g, "_").toLocaleLowerCase()
 								acc.model.spec = [];
 								acc.count += 1;
 							}

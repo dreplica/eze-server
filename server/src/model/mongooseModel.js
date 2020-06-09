@@ -1,7 +1,6 @@
 import mongoose from 'mongoose'
 
 export const iphoneSchema = new mongoose.Schema({
-	_id: false,
 	condition: String,
 	image: String,
 	locked: String,
