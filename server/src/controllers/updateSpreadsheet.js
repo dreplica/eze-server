@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import auth from '../../config'
 import { setProductsData } from '../logic/getSpreadsheet'
 import arrangeData from '../logic/arrangeData'
-// import  model  from '../model/mongooseModel'
+import  phoneModel  from '../model/mongooseModel'
 
 const entries = [
 	{ Sheetpath: 'IPHONES!A3:J', purpose: 'buy' },
@@ -11,7 +11,7 @@ const entries = [
 
 const updateHandler = async (data) => {
 	try {
-		model.insertMany(data);
+		phoneModel.insertMany(data);
 	} catch (error) {
 		return error;
 	}
@@ -37,8 +37,8 @@ const updateHandler = async (data) => {
 };
 
 
-export default (model) => {
+export default () => {
 	entries.forEach((path) => {
-		updateModel(path, model)
+		updateModel(path, phoneModel)
 	})
 }

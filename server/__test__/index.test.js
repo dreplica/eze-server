@@ -45,16 +45,16 @@ describe('DB and API test', () => {
 
         router.get('/api/')
             .expect(200, done)
-        
+
         router.get('/api/buy')
             .expect(200, done)
-        
+
         router.get('/api/sell')
             .expect(200, done)
-        
+
         router.get('/api/update')
-        .expect(200,done)
-        
+            .expect(200, done)
+
     })
 
     // test("test endpoints with filter data")

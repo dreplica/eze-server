@@ -2,7 +2,6 @@ import express from 'express'
 import getProducts from '../controllers/products'
 import updateSpreadsheet from '../controllers/updateSpreadsheet'
 import pagination from '../logic/pagination'
-import phoneModel from '../model/mongooseModel';
 
 const router = express.Router();
 
@@ -11,7 +10,7 @@ router.get('/', pagination(), async (req, res) => {
 	try {
 		const { limit, startPoint } = req
 		const filter = req.query
-		const result = await getProducts(phoneModel,startPoint, limit, filter);
+		const result = await getProducts(startPoint, limit, filter);
 
 		if (!result.length) req.pagination.forward = {}
 		if (result.error) {
@@ -27,7 +26,7 @@ router.get('/', pagination(), async (req, res) => {
 
 router.get('/update', async (req, res) => {
 	try {
-		await updateSpreadsheet(phoneModel)
+		await updateSpreadsheet()
 		return res.status(200).json({ status: 'refreshed' });
 	} catch (error) {
 		console.log(error);
@@ -40,7 +39,7 @@ router.get('/buy', pagination(), async (req, res) => {
 	try {
 		const { limit, startPoint } = req
 		const filter = req.query
-		const result = await getProducts(phoneModel,startPoint, limit, filter);
+		const result = await getProducts(startPoint, limit, filter);
 
 		if (!result.length) req.pagination.forward = {}
 		if (result.error) {
@@ -58,7 +57,7 @@ router.get('/sell', pagination(), async (req, res) => {
 	try {
 		const { limit, startPoint } = req
 		const filter = req.query
-		const result = await getProducts(phoneModel,startPoint, limit, filter);
+		const result = await getProducts(startPoint, limit, filter);
 
 		if (!result.length) req.pagination.forward = {}
 		if (result.error) {
