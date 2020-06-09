@@ -1,17 +1,16 @@
 import phoneModel from "../model/mongooseModel";
 
 const pagination = () => async (req, res, next) => {
-    if (!req.query.page) {
-        req.pagination = { previous: {}, forward: {} }
-        return next()
-    };
 
-    let { sell, page, limit, size, condition } = req.query
 
-    page = parseInt(page)
-    limit = parseInt(limit)
+    let { sell, page, limit, size, condition, phone } = req.query
 
-    const length = await getPagingLength({ sell, size, condition })
+    page = !page ? 1 : parseInt(page)
+    limit = !limit ? 10 : parseInt(limit)
+
+    const length = await getPagingLength({ phone, sell, size, condition })
+
+    console.log("this is lenghtt after checking", length)
 
     const startPoint = (page - 1) * limit;
     const endPoint = page * limit
@@ -29,18 +28,21 @@ const pagination = () => async (req, res, next) => {
 }
 
 
-const getPagingLength = async ({ phone = /\w/, sell = /\w/, size, condition = /\w/ }) => {
+const getPagingLength = async ({ phone = "iphone", sell = "", size = '', condition = "" }) => {
 
     const high = !size ? Infinity : size
     const low = !size ? 0 : size
+    // phone = phone?{$regex:phone, $options:"i"}:{$exists:true}
+    // sell = sell ? { $regex: sell, $options:"i"}:{$exists:true}
+    // condition = condition ? { $regex: condition, $options:"i"}:{$exists:true}
+    console.log(phone)
+    return await phoneModel.find({
+        memory: { $gte: low, $lte: high },
+        sell: { $regex: sell, $options: "i" },
+        phone: { $regex: phone, $options: "i" },
+        condition: { $regex: condition, $options: "i" },
 
-    return await phoneModel.countDocuments(
-        {
-            phone: { $regex: phone, $options: "i" },
-            sell: { $regex: sell, $options: "i" },
-            condition: { $regex: condition, $options: "i" },
-            memory: { $gte: low, $lte: high }
-        })
+    }).countDocuments()
 }
 
 export default pagination
