@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start":"yarn build && node dist/bin/www.js",
-    "build": "babel server -d dist"
+    "start": "yarn build && node dist/bin/www.js",
+    "build": "babel server -d dist",
+    "test": "jest"
   },
   "dependencies": {
     "axios": "^0.19.2",
@@ -31,6 +32,9 @@
     "@babel/core": "^7.10.2",
     "@babel/node": "^7.10.1",
     "@babel/preset-env": "^7.10.2",
-    "@babel/register": "^7.10.1"
+    "@babel/register": "^7.10.1",
+    "jest": "^26.0.1",
+    "mongodb-memory-server": "^6.6.1",
+    "supertest": "^4.0.2"
   }
 }
