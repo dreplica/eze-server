@@ -2,7 +2,6 @@ import phoneModel from "../model/mongooseModel";
 
 const pagination = () => async (req, res, next) => {
 
-
     let { sell, page, limit, size, condition, phone } = req.query
 
     page = !page ? 1 : parseInt(page)
