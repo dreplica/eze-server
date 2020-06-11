@@ -28,7 +28,6 @@ const updateHandler = async (data) => {
 			mongoose.connection.db.dropCollection("phones", (res) => {
 				updateHandler(result);
 			});
-
 		});
 	} catch (error) {
 		console.log(error);
