@@ -2,8 +2,6 @@
 
 #files
 dist
-server/__test__
-.txt
 
 # dependencies
 /node_modules
