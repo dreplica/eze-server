@@ -2,11 +2,13 @@
   "name": "eze-test",
   "version": "0.0.0",
   "private": true,
-  "scripts": {
-    "start": "node dist/bin/www.js --exec babel-node",
-    "build": "babel server -d dist",
-    "serve": "node dist/bin/www.js"
-  },
+ "scripts": {
+  "commit": "git add . && git commit -m",
+  "prestart": "rm -rf dist && yarn jest",
+  "start": "yarn build &&  node dist/bin/www.js --exec babel-node",
+  "build": "babel server -d dist",
+  "serve": "node dist/bin/www.js"
+},
   "dependencies": {
     "axios": "^0.19.2",
     "babel-core": "^6.26.3",
