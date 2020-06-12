@@ -2,14 +2,12 @@ import phoneModel from "../model/mongooseModel";
 
 const pagination = () => async (req, res, next) => {
 
-    let { sell, page, limit, size, condition, phone } = req.query
+    let { sell, page, limit, size, condition, phone,max,min } = req.query
 
     page = !page ? 1 : parseInt(page)
     limit = !limit ? 10 : parseInt(limit)
 
-    const length = await getPagingLength({ phone, sell, size, condition })
-
-    console.log("this is lenghtt after checking", length)
+    const length = await getPagingLength({ phone, sell, size, condition,max,min })
 
     const startPoint = (page - 1) * limit;
     const endPoint = page * limit
@@ -27,13 +25,16 @@ const pagination = () => async (req, res, next) => {
 }
 
 
-const getPagingLength = async ({ phone = "iphone", sell = "", size = '', condition = "" }) => {
+const getPagingLength = async ({ phone = "iphone", sell = "", size = '', condition = "",max="",min="" }) => {
 
-    const high = !size ? Infinity : size
-    const low = !size ? 0 : size
+    const highestSize = !size ? Infinity : size
+    const lowSize = !size ? 0 : size
+    const maxPrice = !max ? Infinity : max
+    const minPrice = !min ? 0 : min
 
     return await phoneModel.find({
-        memory: { $gte: low, $lte: high },
+        memory: { $gte: lowSize, $lte: highestSize },
+        price: { $gte: minPrice, $lte: maxPrice },
         sell: { $regex: sell, $options: "i" },
         phone: { $regex: phone, $options: "i" },
         condition: { $regex: condition, $options: "i" },

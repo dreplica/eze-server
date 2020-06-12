@@ -10,6 +10,9 @@ router.get('/', pagination(), async (req, res) => {
 	try {
 		const { limit, startPoint } = req
 		const filter = req.query
+	
+		console.log('filter :>> ', filter);
+
 		const result = await getProducts(startPoint, limit, filter);
 
 		if (!result.length) req.pagination.forward = {}
