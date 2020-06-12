@@ -8,7 +8,9 @@
 
 //babel development script
  "scripts": {
-    "start": "yarn build && node dist/bin/www.js",
-    "build": "babel server -d --ignore server/__test__  --out-dir dist",
-    "test": "jest"
+    "commit":"git add . && git commit -m",
+    "prestart": "rm -rf dist && yarn jest",
+    "start": "yarn build &&  node dist/bin/www.js --exec babel-node",
+    "build": "babel server -d dist",
+    "serve": "node dist/bin/www.js"
   },
