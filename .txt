@@ -5,3 +5,10 @@
     "build": "babel server -d dist",
     "serve": "node dist/bin/www.js"
   }
+
+//babel development script
+ "scripts": {
+    "start": "yarn build && node dist/bin/www.js",
+    "build": "babel server -d --ignore server/__test__  --out-dir dist",
+    "test": "jest"
+  },
