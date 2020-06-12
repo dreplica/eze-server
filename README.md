@@ -35,4 +35,5 @@ end point here https://eze-test.herokuapp.com/
     mongoose and mongodb: for database management
     googleapis: used to communicate with google spreadsheet as to fetch the datas and populating to db
     mongodb-memory-server: for testing DB in realtime
+    supertest: for testing api
     
