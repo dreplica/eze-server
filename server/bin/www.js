@@ -1,14 +1,18 @@
 #!/usr/bin/env node
-require("regenerator-runtime/runtime");
-require('dotenv').config();
+import "regenerator-runtime/runtime";
+import dotenv from 'dotenv'
+
 /**
  * Module dependencies.
  */
 
-var app = require('../app').default;
-var debug = require('debug')('eze-test:server');
-var http = require('http');
-const mongoose = require('mongoose')
+import  app from '../app'
+import debug from 'debug'
+import  http from 'http'
+import mongoose from 'mongoose'
+
+dotenv.config()
+debug.debug('eze-test:server');
 
 /**
  * Get port from environment and store in Express.
