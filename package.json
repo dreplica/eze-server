@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "commit":"git add . && git commit -m",
     "prestart": "yarn jest --detectOpenHandles",
     "start": "node dist/bin/www.js --exec babel-node",
     "build": "babel server -d dist",
